@@ -1,0 +1,64 @@
+{
+  "name": "news-scraper",
+  "version": "1.0.0",
+  "description": "All the News That's Fit to Scrape",
+  "engines": {
+    "node": "11.7.0"
+  },
+  "private": true,
+  "main": "bin/www",
+  "scripts": {
+    "start": "node ./bin/www",
+    "lint": "eslint '**/*.js' --quiet",
+    "fix": "eslint --fix .",
+    "test": "npm run lint && NODE_ENV=test mocha -u tdd --reporter spec --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardcyrus/news-scraper.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "handlebars",
+    "axios",
+    "cheerio",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "Richard Cyrus <hello@rcyrus.com> (https://www.richardcyrus.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/richardcyrus/news-scraper/issues"
+  },
+  "homepage": "https://github.com/richardcyrus/news-scraper#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "csurf": "^1.9.0",
+    "debug": "^4.1.1",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "helmet": "^3.15.0",
+    "http-errors": "^1.7.1",
+    "mongoose": "^5.4.10",
+    "morgan": "^1.9.1",
+    "node-sass-middleware": "^0.11.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "eslint": "^5.13.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-chai-friendly": "^0.4.1",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "mocha": "^5.2.0",
+    "prettier": "^1.16.4"
+  }
+}
