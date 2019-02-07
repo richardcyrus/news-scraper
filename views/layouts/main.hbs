@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
-    {{{body}}}
+    {{>navbar}}
+    {{>jumbotron}}
+    <div class="container-fluid article-container">
+        {{{body}}}
+    </div>
+    {{>footer}}
 </body>
 </html>
