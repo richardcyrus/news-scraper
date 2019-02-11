@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a href="/" class="navbar-brand">News Scraper</a>
+    <a href="/" class="navbar-brand">{{title}}</a>
     <button class="navbar-toggler" data-toggle="collapse" data-target="#news-nav" aria-controls="news-nav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,12 +8,14 @@
             <li class="nav-item active">
                 <a href="/" class="nav-link">Home</a>
             </li>
+{{#if indexRoute}}
             <li class="nav-item">
                 <a href="/saved" class="nav-link">Saved Articles</a>
             </li>
             <li class="nav-item">
                 <a href="#" class="btn btn-danger scrape-new">Scrape New Articles!</a>
             </li>
+{{/if}}
             <li class="nav-item">
                 <a href="#" class="btn btn-danger clear">Clear Articles!</a>
             </li>
