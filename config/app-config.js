@@ -9,4 +9,11 @@ module.exports = {
     session: {
         secret: process.env.SESSION_SECRET,
     },
+    mongodb: {
+        uri: process.env.MONGODB_URI,
+    },
+    site: {
+        url: 'https://www.nytimes.com/section/technology',
+        base: 'https://www.nytimes.com',
+    },
 };
