@@ -177,4 +177,64 @@ router.patch('/headlines/:id', (req, res) => {
     );
 });
 
+/* GET /api/notes/:articleId Get notes for a particular article. */
+router.get('/notes/:articleId', (req, res) => {
+    const id = req.params.articleId;
+
+    db.Note.find({ article: id }, null, { lean: true }, (error, notes) => {
+        if (error) {
+            return res.status(500).json({
+                message: 'Error looking for Notes.',
+                error: error,
+            });
+        }
+
+        if (!notes) {
+            return res
+                .status(404)
+                .json({ message: 'There are no Notes for this article.' });
+        }
+
+        res.json(notes);
+    });
+});
+
+/**
+ * POST /api/note
+ *
+ * Save a new note for a particular article.
+ * req.body = { article: <article objectId>, body: <text> }
+ */
+router.post('/note', (req, res) => {
+    const noteData = req.body;
+
+    // Create and save the note.
+    db.Note.create(noteData, (error, note) => {
+        if (error) {
+            return res.status(500).json({
+                message: 'Error saving note!',
+                error: error,
+            });
+        }
+
+        // Update the associated article with the reference.
+        db.Article.findOneAndUpdate(
+            { _id: noteData.article },
+            { $push: { notes: note._id } },
+            { new: true }
+        )
+            .populate('notes')
+            .exec((error, article) => {
+                if (error) {
+                    return res.status(500).json({
+                        message: 'Error linking note to the Article!',
+                        error: error,
+                    });
+                }
+
+                res.json(article);
+            });
+    });
+});
+
 module.exports = router;
