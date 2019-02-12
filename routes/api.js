@@ -35,7 +35,7 @@ router.get('/headlines', (req, res) => {
                     .json({ message: 'There are no Headlines.' });
             }
 
-            res.json(articles);
+            res.status(200).json(articles);
         }
     );
 });
@@ -174,7 +174,7 @@ router.patch('/headlines/:id', (req, res) => {
 
             debug('Patch::SetSavedState:: %O', raw);
 
-            res.json({ saved: true });
+            res.status(200).json({ saved: true });
         }
     );
 });
@@ -197,17 +197,17 @@ router.get('/notes/:articleId', (req, res) => {
                 .json({ message: 'There are no Notes for this article.' });
         }
 
-        res.json(notes);
+        res.status(200).json(notes);
     });
 });
 
 /**
- * POST /api/note
+ * POST /api/notes
  *
  * Save a new note for a particular article.
  * req.body = { article: <article objectId>, body: <text> }
  */
-router.post('/note', (req, res) => {
+router.post('/notes', (req, res) => {
     const noteData = req.body;
 
     // Create and save the note.
@@ -219,23 +219,26 @@ router.post('/note', (req, res) => {
             });
         }
 
-        // Update the associated article with the reference.
-        db.Article.findOneAndUpdate(
-            { _id: noteData.article },
-            { $push: { notes: note._id } },
-            { new: true }
-        )
-            .populate('notes')
-            .exec((error, article) => {
-                if (error) {
-                    return res.status(500).json({
-                        message: 'Error linking note to the Article!',
-                        error: error,
-                    });
-                }
+        res.status(201).json(note);
+    });
+});
 
-                res.json(article);
+/**
+ * DELETE /api/notes/:id
+ */
+router.delete('/notes/:id', (req, res) => {
+    const id = req.params.id;
+
+    // Create and save the note.
+    db.Note.deleteOne({ _id: id }, (error) => {
+        if (error) {
+            return res.status(500).json({
+                message: 'Error deleting note!',
+                error: error,
             });
+        }
+
+        res.status(200).end();
     });
 });
 

@@ -126,9 +126,8 @@
     }
 
     /**
-    /**
-     * Delete the article when the user clicks the 'Delete Article'
-     * button.
+     * Change the saved property of an article when the user clicks the
+     * 'Remove from Saved' button.
      *
      * @param event
      */
@@ -185,7 +184,7 @@
                     .html('&times;');
 
                 const note = $('<li>')
-                    .addClass(['list-group-item', 'note'].join(' '))
+                    .addClass('list-group-item note')
                     .html(`<p class="mb-0">${data.notes[i].body}</p>`)
                     .append(button);
 
@@ -284,7 +283,7 @@
             };
 
             $.ajax({
-                url: '/api/note',
+                url: '/api/notes',
                 data: noteData,
                 method: 'post',
                 headers: { 'X-CSRF-Token': token },
@@ -296,29 +295,27 @@
     }
 
     /**
-     * Delete a note from a article.
-     * TODO: Flesh this out. We are getting the note id on button press.
+     * Delete a note from an article.
      *
      * @param event
      */
     function deleteNote(event) {
         event.preventDefault();
-        // const element = event.target;
+        const element = event.target;
 
         const note = $(this).data('id');
-        console.log('Delete note id: ', note);
 
-        // $.ajax({
-        //     method: 'delete',
-        //     url: `/api/notes/${note}`,
-        //     headers: { 'X-CSRF-Token': token },
-        // }).done((data) => {
-        //     if (data.deleted) {
-        //         $(this)
-        //             .parents('.note')
-        //             .remove();
-        //     }
-        // });
+        $.ajax({
+            method: 'delete',
+            url: `/api/notes/${note}`,
+            headers: { 'X-CSRF-Token': token },
+        }).done(() => {
+            $(element)
+                .parents('.note')
+                .remove();
+        });
+    }
+
     /**
      * Remove all content from the application.
      *
