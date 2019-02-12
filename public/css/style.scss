@@ -1,9 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Cormorant+SC:400|Libre+Franklin:400,800|Source+Serif+Pro:400,600,700');
 
-@import "node_modules/bootswatch/dist/pulse/variables";
-
+// Bootstrap overrides.
 $font-family-sans-serif: 'Libre Franklin', sans-serif;
 
+// bootswatch List Group Override.
+$list-group-bg: #fff;
+$list-group-border-color: rgba(0, 0, 0, .125);
+$list-group-hover-bg: #f8f9fa;
+$list-group-active-color: #fff;
+$list-group-active-bg: #593196;
+$list-group-disabled-color: #6c757d;
+
+@import "node_modules/bootswatch/dist/pulse/variables";
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/bootswatch/dist/pulse/bootswatch";
 
@@ -132,6 +140,25 @@ body {
             .btn {
                 margin-right: auto;
             }
+        }
+    }
+}
+
+// Override Pulse Colors for the list groups
+// - These didn't use variables.
+// - Added additional styling for the modal content.
+.list-group {
+
+    &-item {
+        align-items: center;
+        color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: space-between;
+
+        &.active,
+        &:hover,
+        &:focus {
+            color: darken(#fff, 85%);
         }
     }
 }
