@@ -25,22 +25,41 @@
      * Render an alert and a card with options, when there are no articles.
      */
     function renderEmpty() {
-        const content = [
-            '<div class="alert alert-warning text-center">',
-            "<h4>Uh Oh. Looks like we don't have any new articles.</h4>",
-            '</div>',
-            '<div class="card">',
-            /* eslint-disable-next-line max-len */
-            '<div class="card-header text-center"><h3>What Would You Like To Do?</h3></div>',
-            '<div class="card-body text-center">',
-            /* eslint-disable-next-line max-len */
-            '<h4><a href="#" class="scrape-new">Try Scraping New Articles</a></h4>',
-            '<h4><a href="/saved">Go to Saved Articles</a></h4>',
-            '</div>',
-            '</div>',
-        ].join('');
+        const alertText = "Uh Oh. Looks like we don't have any articles.";
+        const alertBox = $('<div/>')
+            .addClass('alert alert-warning text-center')
+            .append($('<h4/>').text(alertText));
 
-        articleContainer.append(content);
+        const cardHeaderText = 'What Would You Like To Do?';
+        const cardHeader = $('<div/>')
+            .addClass('card-header')
+            .append(
+                $('<h3/>')
+                    .addClass('text-center')
+                    .text(cardHeaderText)
+            );
+
+        const scrapeLink = $('<a/>')
+            .addClass('scrape-new')
+            .attr({ href: '#' })
+            .text('Try Scraping New Articles');
+        const savedLink = $('<a/>')
+            .addClass('go-to-saved')
+            .attr({ href: '/saved' })
+            .text('Go to Saved Articles');
+
+        const cardBody = $('<div/>')
+            .addClass('card-body text-center')
+            .append(
+                $('<h4/>').append(scrapeLink),
+                $('<h4/>').append(savedLink)
+            );
+
+        const card = $('<div/>')
+            .addClass('card')
+            .append(cardHeader, cardBody);
+
+        articleContainer.append(alertBox, card);
     }
 
     /**
@@ -64,24 +83,25 @@
      * @returns {*|jQuery|HTMLElement}
      */
     function createCard(article) {
-        const card = $('<div class="card">');
         /* eslint-disable max-len */
-        card.append(
-            [
-                '<div class="card-header">',
-                '<h3>',
-                '<a class="article-link" target="_blank" rel="noopener noreferrer"',
-                ` href="${article.url}">${article.headline}</a></h3>`,
-                '<ul class="nav nav-pills card-header-pills">',
-                '<li class="nav-item"><a class="btn btn-success save-article">Save Article</a></li>',
-                '</ul></div>',
-                `<div class="card-body">${article.caption}</div>`,
-            ].join('')
-        );
+        // prettier-ignore
+        const card = $(`
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <a href="${article.url}" class="article-link" target="_blank" rel="noopener noreferrer">${article.headline}</a>
+                    </h3>
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="btn btn-success save-article">Save Article</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">${article.caption}</div>
+            </div>`.trim());
 
         // Add the record id to the card element. Used for saving an
         // article.
-        // card.attr('data-id', article._id);
         card.data('id', article._id);
 
         /* eslint-enable */
