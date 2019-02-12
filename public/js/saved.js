@@ -180,16 +180,8 @@
                     .addClass('btn btn-danger note-delete')
                     .html('&times;');
 
-                // TODO: Move styling to stylesheet. Fix colors.
                 const note = $('<li>')
-                    .addClass(
-                        [
-                            'list-group-item',
-                            'd-flex',
-                            'justify-content-between',
-                            'note',
-                        ].join(' ')
-                    )
+                    .addClass(['list-group-item', 'note'].join(' '))
                     .html(`<p class="mb-0">${data.notes[i].body}</p>`)
                     .append(button);
 
