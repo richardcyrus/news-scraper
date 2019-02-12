@@ -11,6 +11,11 @@
     /* eslint-disable-next-line strict */
     'use strict';
 
+    // Get the _csrf token needed for POST, PUT, PATCH, DELETE requests.
+    const token = document
+        .querySelector('meta[name="_csrf"]')
+        .getAttribute('content');
+
     const articleContainer = $('.article-container');
     const scrapeButton = $('.scrape-new');
     const clearButton = $('.clear');
@@ -165,26 +170,24 @@
         const article = $(this)
             .parents('.card')
             .data();
+
+        // Set the state of the article.
         article.saved = true;
-        // console.log(article);
 
-        // Get the _csrf token needed to make changes to the record.
-        const token = document
-            .querySelector('meta[name="_csrf"]')
-            .getAttribute('content');
-
+        // Here we set the content-type and convert the data to JSON
+        // so that when it reaches express, the boolean values are
+        // maintained.
         $.ajax({
             method: 'patch',
             url: `/api/headlines/${article.id}`,
-            data: article,
+            data: JSON.stringify(article),
             headers: { 'X-CSRF-Token': token },
+            contentType: 'application/json',
         }).done((data) => {
             if (data.saved) {
-                // If the record was successfully updated remove the
-                // headline from the page.
-                $(this)
-                    .parents('.card')
-                    .remove();
+                // If the article was successfully saved, refresh the
+                // page content for the case of articles === 0.
+                initPage();
             }
         });
     }

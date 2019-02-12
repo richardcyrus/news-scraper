@@ -154,23 +154,24 @@ router.get('/clear', (req, res) => {
     });
 });
 
-/* Patch /api/headlines/:id Flag the article as saved */
+/* Patch /api/headlines/:id Flag the article as saved/not-saved */
 router.patch('/headlines/:id', (req, res) => {
     const id = req.params.id;
+    const state = req.body.saved;
 
     db.Article.updateOne(
         { _id: id },
-        { $set: { saved: true } },
+        { $set: { saved: state } },
         (error, raw) => {
             if (error) {
                 return res.status(500).json({
                     saved: false,
-                    message: 'Error marking headline as saved.',
+                    message: 'Error marking headline saved state.',
                     error: error,
                 });
             }
 
-            debug('Patch::MarkArticleSaved:: %O', raw);
+            debug('Patch::SetSavedState:: %O', raw);
 
             res.json({ saved: true });
         }

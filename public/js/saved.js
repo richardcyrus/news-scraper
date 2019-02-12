@@ -20,7 +20,7 @@
     const clearButton = $('.clear');
 
     // Register button click handlers/
-    articleContainer.on('click', '.delete-article', deleteArticle);
+    articleContainer.on('click', '.remove-saved', removeSaved);
     articleContainer.on('click', '.article-notes', showNotes);
     clearButton.on('click', clearArticles);
     $(document).on('click', '.btn.note-delete', deleteNote);
@@ -37,8 +37,12 @@
 
         const cardHeaderText = 'Would You Like to Browse Available Articles?';
         const cardHeader = $('<div/>')
-            .addClass('card-header text-center')
-            .append($('<h3/>').text(cardHeaderText));
+            .addClass('card-header')
+            .append(
+                $('<h3/>')
+                    .addClass('text-center')
+                    .text(cardHeaderText)
+            );
 
         const browseLink = $('<a/>')
             .addClass('browse-articles')
@@ -89,7 +93,7 @@
                             <a class="btn btn-primary article-notes">Article Notes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-danger delete-article">Delete Article</a>
+                            <a class="btn btn-danger remove-saved">Remove from Saved</a>
                         </li>
                     </ul>
                 </div>
@@ -140,9 +144,8 @@
      *
      * @param event
      */
-    function deleteArticle(event) {
+    function removeSaved(event) {
         event.preventDefault();
-        const element = event.target;
 
         // Get the article _id that was clicked. This comes from the
         // javascript object that was attached, using the .data() method,
@@ -150,20 +153,24 @@
         const article = $(this)
             .parents('.card')
             .data();
-        // console.log(article);
 
-        // TODO: Implement on Backend
+        // Set the state of the article.
+        article.saved = false;
+
+        // Here we set the content-type and convert the data to JSON
+        // so that when it reaches express, the boolean values are
+        // maintained.
         $.ajax({
-            method: 'delete',
+            method: 'patch',
             url: `/api/headlines/${article.id}`,
+            data: JSON.stringify(article),
             headers: { 'X-CSRF-Token': token },
+            contentType: 'application/json',
         }).done((data) => {
-            if (data.deleted) {
-                // If the record was successfully deleted remove the
-                // headline from the page.
-                $(element)
-                    .parents('.card')
-                    .remove();
+            if (data.saved) {
+                // If the record was successfully saved, refresh the
+                // page content for the case of saved headlines === 0.
+                initPage();
             }
         });
     }
