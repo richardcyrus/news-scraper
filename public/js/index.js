@@ -75,6 +75,7 @@
             articleContainer.empty();
             if (data && data.length > 0) {
                 renderArticles(data);
+                $('[data-toggle="tooltip"]').tooltip();
             } else {
                 renderEmpty();
             }
@@ -98,7 +99,7 @@
                     </h3>
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item">
-                            <a class="btn btn-success save-article">Save Article</a>
+                            <a class="btn btn-primary save-article" data-toggle="tooltip" title="Save Article"><span class="far fa-bookmark"></span></a>
                         </li>
                     </ul>
                 </div>

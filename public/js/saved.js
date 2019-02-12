@@ -67,6 +67,7 @@
 
             if (data && data.length > 0) {
                 renderArticles(data);
+                $('[data-toggle="tooltip"]').tooltip();
             } else {
                 renderEmpty();
             }
@@ -90,10 +91,10 @@
                     </h3>
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item">
-                            <a class="btn btn-primary article-notes">Article Notes</a>
+                            <a class="btn btn-primary article-notes" data-toggle="tooltip" title="Article Notes"><span class="far fa-sticky-note"></span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-danger remove-saved">Remove from Saved</a>
+                            <a class="btn btn-danger remove-saved" data-toggle="tooltip" title="Remove from Saved"><span class="far fa-minus-square"></span></a>
                         </li>
                     </ul>
                 </div>
@@ -181,7 +182,7 @@
             for (let i = 0; i < data.notes.length; i++) {
                 const button = $('<button>')
                     .addClass('btn btn-danger btn-sm note-delete')
-                    .html('&times;');
+                    .html('<span class="fas fa-trash-alt"></span>');
 
                 const note = $('<li>')
                     .addClass('list-group-item note')
@@ -242,7 +243,8 @@
                 backdrop: true,
                 buttons: {
                     save: {
-                        label: 'Save Note',
+                        label:
+                            '<span class="far fa-save"></span>&nbsp;Save Note',
                         className: 'btn-success save-note',
                         callback: saveNote,
                     },
