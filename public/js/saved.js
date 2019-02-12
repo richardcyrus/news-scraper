@@ -11,6 +11,11 @@
     /* eslint-disable-next-line strict */
     'use strict';
 
+    // Get the _csrf token needed for POST, PUT, PATCH, DELETE requests.
+    const token = document
+        .querySelector('meta[name="_csrf"]')
+        .getAttribute('content');
+
     const articleContainer = $('.article-container');
     const clearButton = $('.clear');
 
@@ -25,21 +30,28 @@
      * articles.
      */
     function renderEmpty() {
-        const content = [
-            '<div class="alert alert-warning text-center">',
-            "<h4>Uh Oh. Looks like we don't have any saved articles.</h4>",
-            '</div>',
-            '<div class="card">',
-            /* eslint-disable-next-line max-len */
-            '<div class="card-header text-center"><h3>Would You Like to Browse Available Articles?</h3></div>',
-            '<div class="card-body text-center">',
-            /* eslint-disable-next-line max-len */
-            '<h4><a href="/" class="browse-articles">Browse Articles</a></h4>',
-            '</div>',
-            '</div>',
-        ].join('');
+        const alertText = "Uh Oh. Looks like we don't have any saved articles.";
+        const alertBox = $('<div/>')
+            .addClass('alert alert-warning text-center')
+            .append($('<h4/>').text(alertText));
 
-        articleContainer.append(content);
+        const cardHeaderText = 'Would You Like to Browse Available Articles?';
+        const cardHeader = $('<div/>')
+            .addClass('card-header text-center')
+            .append($('<h3/>').text(cardHeaderText));
+
+        const browseLink = $('<a/>')
+            .addClass('browse-articles')
+            .attr({ href: '/' })
+            .text('Browse Articles');
+        const cardBody = $('<div/>')
+            .addClass('card-body text-center')
+            .append($('<h4/>').append(browseLink));
+        const card = $('<div/>')
+            .addClass('card')
+            .append(cardHeader, cardBody);
+
+        articleContainer.append(alertBox, card);
     }
 
     /**
@@ -64,28 +76,31 @@
      * @returns {*|jQuery|HTMLElement}
      */
     function createCard(article) {
-        const card = $('<div class="card">');
         /* eslint-disable max-len */
-        card.append(
-            [
-                '<div class="card-header">',
-                '<h3>',
-                '<a class="article-link" target="_blank" rel="noopener noreferrer"',
-                ` href="${article.url}">${article.headline}</a></h3>`,
-                '<ul class="nav nav-pills card-header-pills">',
-                '<li class="nav-item"><a class="btn btn-primary article-notes">Article Notes</a></li>',
-                '<li class="nav-item"><a class="btn btn-danger delete-article">Delete Article</a></li>',
-                '</ul></div>',
-                `<div class="card-body">${article.caption}</div>`,
-            ].join('')
-        );
-
-        // Add the record id to the card element. Used for saving an
-        // article.
-        // card.attr('data-id', article._id);
-        card.data('id', article._id);
+        // prettier-ignore
+        const card = $(`
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <a href="${article.url}" class="article-link" target="_blank" rel="noopener noreferrer">${article.headline}</a>
+                    </h3>
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="btn btn-primary article-notes">Article Notes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-danger delete-article">Delete Article</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">${article.caption}</div>
+            </div>`.trim());
 
         /* eslint-enable */
+        // Add the record id to the card element. Used for saving an
+        // article.
+        card.data('id', article._id);
+
         return card;
     }
 
@@ -137,12 +152,6 @@
             .data();
         // console.log(article);
 
-        // TODO: Refactor out to a higher level function.
-        // Get the _csrf token needed to make changes to the record.
-        const token = document
-            .querySelector('meta[name="_csrf"]')
-            .getAttribute('content');
-
         // TODO: Implement on Backend
         $.ajax({
             method: 'delete',
@@ -177,7 +186,7 @@
         } else {
             for (let i = 0; i < data.notes.length; i++) {
                 const button = $('<button>')
-                    .addClass('btn btn-danger note-delete')
+                    .addClass('btn btn-danger btn-sm note-delete')
                     .html('&times;');
 
                 const note = $('<li>')
@@ -219,11 +228,13 @@
                 'list-group note-container'
             );
             const contentBreak = $('<hr>').addClass('my-2');
-            const newNoteBox = $('<textarea>').attr({
-                placeholder: 'Write your notes here...',
-                rows: 4,
-                cols: 50,
-            });
+            const newNoteBox = $('<textarea>')
+                .addClass('form-control')
+                .attr({
+                    placeholder: 'Write your notes here...',
+                    rows: 4,
+                    cols: 50,
+                });
 
             contentWrap.append(existingNotes, contentBreak, newNoteBox);
 
@@ -266,11 +277,6 @@
     function saveNote(event) {
         const element = event.target;
 
-        // TODO: Refactor out to a higher level function.
-        const token = document
-            .querySelector('meta[name="_csrf"]')
-            .getAttribute('content');
-
         let noteData;
         const newNote = $('.bootbox-body textarea')
             .val()
@@ -303,11 +309,6 @@
     function deleteNote(event) {
         event.preventDefault();
         // const element = event.target;
-
-        // TODO: Refactor out to a higher level function.
-        // const token = document
-        //     .querySelector('meta[name="_csrf"]')
-        //     .getAttribute('content');
 
         const note = $(this).data('id');
         console.log('Delete note id: ', note);
