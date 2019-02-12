@@ -140,18 +140,19 @@ router.get('/fetch', async (req, res) => {
     }
 });
 
-/* GET /api/clear Remove all articles. */
-router.get('/clear', (req, res) => {
-    db.Article.deleteMany({}, (error) => {
-        if (error) {
-            return res.status(500).json({
-                message: 'Error removing all articles.',
-                error: error,
-            });
-        }
+/* DELETE /api/clear Remove all articles and notes. */
+router.delete('/clear', async (req, res) => {
+    try {
+        await db.Note.deleteMany({});
+        await db.Article.deleteMany({});
 
-        res.end();
-    });
+        res.status(200).end();
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Error removing all content.',
+            error: error,
+        });
+    }
 });
 
 /* Patch /api/headlines/:id Flag the article as saved/not-saved */

@@ -24,7 +24,7 @@
     scrapeButton.on('click', askForArticles);
     articleContainer.on('click', '.scrape-new', askForArticles);
     articleContainer.on('click', '.save-article', saveArticle);
-    clearButton.on('click', clearArticles);
+    clearButton.on('click', clearContent);
 
     /**
      * Render an alert and a card with options, when there are no articles.
@@ -144,19 +144,6 @@
     }
 
     /**
-     * Remove all articles from the application.
-     *
-     * @param event
-     */
-    function clearArticles(event) {
-        event.preventDefault();
-
-        $.get('/api/clear').done(() => {
-            initPage();
-        });
-    }
-
-    /**
      * Save the article when the user clicks the 'Save Article' button.
      *
      * @param event
@@ -189,6 +176,23 @@
                 // page content for the case of articles === 0.
                 initPage();
             }
+        });
+    }
+
+    /**
+     * Remove all content from the application.
+     *
+     * @param event
+     */
+    function clearContent(event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: '/api/clear',
+            method: 'delete',
+            headers: { 'X-CSRF-Token': token },
+        }).done(() => {
+            initPage();
         });
     }
 

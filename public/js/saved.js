@@ -22,7 +22,7 @@
     // Register button click handlers/
     articleContainer.on('click', '.remove-saved', removeSaved);
     articleContainer.on('click', '.article-notes', showNotes);
-    clearButton.on('click', clearArticles);
+    clearButton.on('click', clearContent);
     $(document).on('click', '.btn.note-delete', deleteNote);
 
     /**
@@ -126,18 +126,6 @@
     }
 
     /**
-     * Remove all articles from the application.
-     *
-     * @param event
-     */
-    function clearArticles(event) {
-        event.preventDefault();
-
-        $.get('/api/clear').done(() => {
-            initPage();
-        });
-    }
-
     /**
      * Delete the article when the user clicks the 'Delete Article'
      * button.
@@ -331,6 +319,21 @@
         //             .remove();
         //     }
         // });
+    /**
+     * Remove all content from the application.
+     *
+     * @param event
+     */
+    function clearContent(event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: '/api/clear',
+            method: 'delete',
+            headers: { 'X-CSRF-Token': token },
+        }).done(() => {
+            initPage();
+        });
     }
 
     // TODO: Find a better way to call this.
