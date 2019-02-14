@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css?family=Cormorant+SC:400|Libre+Franklin:400,800|Source+Serif+Pro:400,600,700');
+
+// Bootstrap overrides.
+$font-family-sans-serif: 'Libre Franklin', sans-serif;
+
+// bootswatch List Group Override.
+$list-group-bg: #fff;
+//$list-group-border-color: rgba(0, 0, 0, .125);
+$list-group-border-color: transparent;
+$list-group-hover-bg: #f8f9fa;
+$list-group-active-color: #fff;
+$list-group-active-bg: #593196;
+$list-group-disabled-color: #6c757d;
+
+@import "node_modules/bootswatch/dist/pulse/variables";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootswatch/dist/pulse/bootswatch";
+
+html {
+    height: 100%;
+    position: relative;
+}
+
+body {
+    background-image: url('../images/paper_2.png');
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    margin-bottom: 0;
+    z-index: 1;
+
+    a.scrape-new,
+    a.clear {
+        font-weight: 400;
+        margin-right: 0.5rem;
+    }
+}
+
+.jumbotron {
+    box-shadow: 0.625rem 0.3125rem 1.25rem 0.125rem rgba(0,0,0, 0.8);
+    height: 15.625rem;
+    padding: 0;
+    position: relative;
+    width: 100%;
+
+    .overlay {
+        background: linear-gradient(#333, black);
+        bottom: 0;
+        left: 0;
+        opacity: 0.7;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: auto;
+    }
+
+    .background-image {
+        background-image: url('../images/hayden-walker-705539-unsplash.jpg');
+        background-size: cover;
+        height: 100%;
+    }
+
+    .caption {
+        position: absolute;
+        text-align: center;
+        top: 15%;
+        width: 100%;
+
+        h1, p {
+            color: #ffffff;
+        }
+
+        h1 {
+            font-family: 'Cormorant SC', serif;
+            font-size: 5rem;
+            font-weight: 400;
+        }
+
+        p {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.875rem;
+        }
+    }
+}
+
+.article-container {
+    padding-bottom: 1.5625rem;
+    flex: 1 0 auto;
+}
+
+.footer {
+    background-color: $primary;
+    color: white;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 5rem;
+    justify-content: flex-end;
+    width: 100%;
+
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+
+        p {
+            background: darken($primary, 10%);
+            font-weight: 600;
+            margin: 0;
+            padding: 5px 5px 5px 10px;
+            width: 100%;
+        }
+    }
+}
+
+.card {
+    box-shadow: 0.1875rem 0.1875rem 1.25rem #333;
+    margin-bottom: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.card-header {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h3 {
+        font-family: 'Source Serif Pro', serif;
+    }
+    .nav {
+        justify-content: flex-end;
+
+        .btn {
+            color: $white;
+            margin-right: 0.5rem;
+        }
+
+        .nav-item:last-child {
+            .btn {
+                margin-right: auto;
+            }
+        }
+    }
+}
+
+// Override Pulse Colors for the list groups
+// - These didn't use variables.
+// - Added additional styling for the modal content.
+.list-group {
+
+    &-item {
+        align-items: center;
+        border-top: $list-group-border-width solid rgba(0, 0, 0, .125) !important;
+        color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: space-between;
+
+        &:last-child {
+            border-bottom: none !important;
+            margin-bottom: 0;
+        }
+
+        @include hover-focus {
+            z-index: inherit;
+            text-decoration: inherit;
+        }
+
+        &.active,
+        &:hover,
+        &:focus {
+            color: darken(#fff, 85%);
+        }
+    }
+}
