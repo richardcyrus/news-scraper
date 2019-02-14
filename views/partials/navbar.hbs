@@ -1,26 +1,28 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a href="/" class="navbar-brand">{{title}}</a>
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
+    <a href="/" class="navbar-brand" title="{{title}}"><span class="fas fa-newspaper"></span></a>
     <button class="navbar-toggler" data-toggle="collapse" data-target="#news-nav" aria-controls="news-nav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="news-nav">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item{{#if indexRoute}} active{{/if}}">
                 <a href="/" class="nav-link">Home</a>
             </li>
-{{#if indexRoute}}
-            <li class="nav-item">
+            <li class="nav-item{{#if savedRoute}} active{{/if}}">
                 <a href="/saved" class="nav-link">Saved Articles</a>
             </li>
+        </ul>
+        {{#if indexRoute}}
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a href="#" class="btn btn-info scrape-new">
-                    <span class="fas fa-cloud-download-alt"></span>&nbsp;Scrape New Articles!</a>
+                    <span class="fas fa-cloud-download-alt"></span>&nbsp;&nbsp;Scrape New Articles!</a>
             </li>
-{{/if}}
             <li class="nav-item">
                 <a href="#" class="btn btn-danger clear">
-                    <span class="far fa-trash-alt"></span>&nbsp;Clear Content!</a>
+                    <span class="far fa-trash-alt"></span>&nbsp;&nbsp;Clear Content!</a>
             </li>
+        {{/if}}
         </ul>
     </div>
 </nav>
