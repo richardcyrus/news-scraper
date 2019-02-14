@@ -5,7 +5,8 @@ $font-family-sans-serif: 'Libre Franklin', sans-serif;
 
 // bootswatch List Group Override.
 $list-group-bg: #fff;
-$list-group-border-color: rgba(0, 0, 0, .125);
+//$list-group-border-color: rgba(0, 0, 0, .125);
+$list-group-border-color: transparent;
 $list-group-hover-bg: #f8f9fa;
 $list-group-active-color: #fff;
 $list-group-active-bg: #593196;
@@ -151,9 +152,20 @@ body {
 
     &-item {
         align-items: center;
+        border-top: $list-group-border-width solid rgba(0, 0, 0, .125) !important;
         color: rgba(0, 0, 0, 0.8);
         display: flex;
         justify-content: space-between;
+
+        &:last-child {
+            border-bottom: none !important;
+            margin-bottom: 0;
+        }
+
+        @include hover-focus {
+            z-index: inherit;
+            text-decoration: inherit;
+        }
 
         &.active,
         &:hover,

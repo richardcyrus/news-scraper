@@ -88,6 +88,12 @@ app.use(
     '/js/lib',
     express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'))
 );
+app.use(
+    '/js/lib/fontawesome',
+    express.static(
+        path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/js')
+    )
+);
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);

@@ -17,12 +17,10 @@
         .getAttribute('content');
 
     const articleContainer = $('.article-container');
-    const clearButton = $('.clear');
 
     // Register button click handlers/
     articleContainer.on('click', '.remove-saved', removeSaved);
     articleContainer.on('click', '.article-notes', showNotes);
-    clearButton.on('click', clearContent);
     $(document).on('click', '.btn.note-delete', deleteNote);
 
     /**
@@ -32,12 +30,12 @@
     function renderEmpty() {
         const alertText = "Uh Oh. Looks like we don't have any saved articles.";
         const alertBox = $('<div/>')
-            .addClass('alert alert-warning text-center')
+            .addClass('shadow alert alert-warning text-center')
             .append($('<h4/>').text(alertText));
 
         const cardHeaderText = 'Would You Like to Browse Available Articles?';
         const cardHeader = $('<div/>')
-            .addClass('card-header')
+            .addClass('card-header d-block')
             .append(
                 $('<h3/>')
                     .addClass('text-center')
@@ -67,6 +65,9 @@
 
             if (data && data.length > 0) {
                 renderArticles(data);
+
+                // Activate tooltips for the action buttons.
+                $('[data-toggle="tooltip"]').tooltip();
             } else {
                 renderEmpty();
             }
@@ -90,10 +91,10 @@
                     </h3>
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item">
-                            <a class="btn btn-primary article-notes">Article Notes</a>
+                            <button class="btn btn-primary article-notes" data-toggle="tooltip" title="Article Notes"><span class="far fa-comments"></span></button>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-danger remove-saved">Remove from Saved</a>
+                            <button class="btn btn-danger remove-saved" data-toggle="tooltip" title="Remove from Saved"><span class="fas fa-unlink"></span></button>
                         </li>
                     </ul>
                 </div>
@@ -104,6 +105,8 @@
         // Add the record id to the card element. Used for saving an
         // article.
         card.data('id', article._id);
+        // Truncate the Article Headline for use in the Notes box display.
+        card.data('title', article.headline.substring(0, 47));
 
         return card;
     }
@@ -133,6 +136,11 @@
      */
     function removeSaved(event) {
         event.preventDefault();
+
+        // Hide the tooltip for this element so that they don't hang
+        // around (Resolves display issues with tooltips for removed
+        // articles).
+        $(this).tooltip('hide');
 
         // Get the article _id that was clicked. This comes from the
         // javascript object that was attached, using the .data() method,
@@ -172,20 +180,24 @@
         const notesToRender = [];
 
         if (!data.notes.length) {
+            /* eslint-disable max-len */
             const noNotes = $('<li>')
-                .addClass('list-group-item')
-                .text('There are currently no notes for this article.');
+                .addClass('list-group-item d-block text-center pb-1')
+                .html(
+                    '<p class="mb-0">There are currently no notes for this article.</p>'
+                );
+            /* eslint-enable max-len */
 
             notesToRender.push(noNotes);
         } else {
             for (let i = 0; i < data.notes.length; i++) {
                 const button = $('<button>')
                     .addClass('btn btn-danger btn-sm note-delete')
-                    .html('&times;');
+                    .html('<span class="fas fa-trash-alt"></span>');
 
                 const note = $('<li>')
                     .addClass('list-group-item note')
-                    .html(`<p class="mb-0">${data.notes[i].body}</p>`)
+                    .html(`<p class="mb-0 mr-3">${data.notes[i].body}</p>`)
                     .append(button);
 
                 // Add the note id reference for the delete call.
@@ -208,6 +220,11 @@
      */
     function showNotes(event) {
         event.preventDefault();
+
+        // Hide the tooltip for this element so that they don't hang
+        // around (Resolves display issues with tooltips after showing
+        // the notes modal).
+        $(this).tooltip('hide');
 
         // Get the article id so we can find any existing notes.
         const article = $(this)
@@ -237,14 +254,27 @@
                 closeButton: true,
                 onEscape: true,
                 show: true,
-                title: `Notes for Article: ${article.id}`, // TODO: fix me
+                title: `<strong>Notes:</strong><br>${article.title}...`,
                 message: contentWrap,
                 backdrop: true,
                 buttons: {
                     save: {
-                        label: 'Save Note',
-                        className: 'btn-success save-note',
+                        /* eslint-disable max-len */
+                        label:
+                            '<span class="fa fa-pencil-alt"></span>&nbsp;&nbsp;Save Note',
+                        /* eslint-enable max-len */
+                        className: 'btn-primary save-note',
                         callback: saveNote,
+                    },
+                    close: {
+                        /* eslint-disable max-len */
+                        label:
+                            '<span class="fas fa-times"></span>&nbsp;&nbsp;Close',
+                        /* eslint-enable max-len */
+                        className: 'btn-outline-warning',
+                        callback: function() {
+                            bootbox.hideAll();
+                        },
                     },
                 },
             });
@@ -316,23 +346,8 @@
         });
     }
 
-    /**
-     * Remove all content from the application.
-     *
-     * @param event
-     */
-    function clearContent(event) {
-        event.preventDefault();
-
-        $.ajax({
-            url: '/api/clear',
-            method: 'delete',
-            headers: { 'X-CSRF-Token': token },
-        }).done(() => {
-            initPage();
-        });
-    }
-
-    // TODO: Find a better way to call this.
+    // Populate the page on page load. This eliminates duplicate code
+    // on the backend, and allows for a simpler setup for the tool-tips
+    // and other associated live elements on the page.
     initPage();
 })(jQuery);

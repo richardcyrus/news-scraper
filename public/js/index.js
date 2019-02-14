@@ -5,7 +5,7 @@
  * (c) 2019 Richard Cyrus <hello@rcyrus.com>
  */
 
-/* global jQuery */
+/* global jQuery, bootbox */
 
 (function($) {
     /* eslint-disable-next-line strict */
@@ -32,12 +32,12 @@
     function renderEmpty() {
         const alertText = "Uh Oh. Looks like we don't have any articles.";
         const alertBox = $('<div/>')
-            .addClass('alert alert-warning text-center')
+            .addClass('shadow alert alert-warning text-center')
             .append($('<h4/>').text(alertText));
 
         const cardHeaderText = 'What Would You Like To Do?';
         const cardHeader = $('<div/>')
-            .addClass('card-header')
+            .addClass('card-header d-block')
             .append(
                 $('<h3/>')
                     .addClass('text-center')
@@ -75,6 +75,9 @@
             articleContainer.empty();
             if (data && data.length > 0) {
                 renderArticles(data);
+
+                // Activate tooltips for the action buttons.
+                $('[data-toggle="tooltip"]').tooltip();
             } else {
                 renderEmpty();
             }
@@ -98,7 +101,7 @@
                     </h3>
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item">
-                            <a class="btn btn-success save-article">Save Article</a>
+                            <button class="btn btn-primary save-article" data-toggle="tooltip" title="Save Article"><span class="fas fa-bookmark"></span></button>
                         </li>
                     </ul>
                 </div>
@@ -138,7 +141,20 @@
     function askForArticles(event) {
         event.preventDefault();
 
+        const loadingText = '&nbsp;Please wait while we collect Articles...';
+        const loadingIcon = $('<span/>').addClass('fas fa-spin fa-spinner');
+        const modalContent = $('<p/>')
+            .addClass('text-center mb-0')
+            .append(loadingIcon, loadingText);
+
+        const loading = bootbox.dialog({
+            message: modalContent,
+            closeButton: false,
+            centerVertical: true,
+        });
+
         $.get('/api/fetch').done(() => {
+            loading.modal('hide');
             initPage();
         });
     }
@@ -150,6 +166,7 @@
      */
     function saveArticle(event) {
         event.preventDefault();
+        $(this).tooltip('hide');
 
         // Get the article _id that was clicked. This comes from the
         // javascript object that was attached, using the .data() method,
@@ -196,6 +213,8 @@
         });
     }
 
-    // TODO: Find a better way to call this.
+    // Populate the page on page load. This eliminates duplicate code
+    // on the backend, and allows for a simpler setup for the tool-tips
+    // and other associated live elements on the page.
     initPage();
 })(jQuery);

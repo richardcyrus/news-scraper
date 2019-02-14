@@ -10,6 +10,7 @@
     {{/if}}
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/style.css"/>
+    <script src="/js/lib/fontawesome/all.min.js"></script>
 </head>
 <body>
     {{>navbar}}
@@ -21,11 +22,11 @@
     <script src="/js/lib/jquery.min.js"></script>
     <script src="/js/lib/popper.min.js"></script>
     <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/vendor/bootbox.min.js"></script>
 {{#if indexRoute}}
     <script src="/js/index.js"></script>
 {{/if}}
 {{#if savedRoute}}
-    <script src="/js/vendor/bootbox.min.js"></script>
     <script src="/js/saved.js"></script>
 {{/if}}
 </body>
