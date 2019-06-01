@@ -34,7 +34,7 @@
   "homepage": "https://github.com/richardcyrus/news-scraper#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "bootstrap": "^4.2.1",
     "bootswatch": "^4.2.1",
     "cheerio": "^1.0.0-rc.2",
