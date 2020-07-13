@@ -30,6 +30,7 @@ mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    useUnifiedTopology: true,
 });
 // Tell Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
