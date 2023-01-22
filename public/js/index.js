@@ -7,7 +7,7 @@
 
 /* global jQuery, bootbox */
 
-(function($) {
+(function ($) {
     /* eslint-disable-next-line strict */
     'use strict';
 
@@ -38,11 +38,7 @@
         const cardHeaderText = 'What Would You Like To Do?';
         const cardHeader = $('<div/>')
             .addClass('card-header d-block')
-            .append(
-                $('<h3/>')
-                    .addClass('text-center')
-                    .text(cardHeaderText)
-            );
+            .append($('<h3/>').addClass('text-center').text(cardHeaderText));
 
         const scrapeLink = $('<a/>')
             .addClass('scrape-new')
@@ -60,9 +56,7 @@
                 $('<h4/>').append(savedLink)
             );
 
-        const card = $('<div/>')
-            .addClass('card')
-            .append(cardHeader, cardBody);
+        const card = $('<div/>').addClass('card').append(cardHeader, cardBody);
 
         articleContainer.append(alertBox, card);
     }
@@ -171,9 +165,7 @@
         // Get the article _id that was clicked. This comes from the
         // javascript object that was attached, using the .data() method,
         // when the card was created.
-        const article = $(this)
-            .parents('.card')
-            .data();
+        const article = $(this).parents('.card').data();
 
         // Set the state of the article.
         article.saved = true;

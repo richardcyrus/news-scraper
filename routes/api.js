@@ -50,9 +50,7 @@ router.get('/fetch', async (req, res) => {
         // For the NYT Sections, capture the highlights.
         $('article h2').each((i, element) => {
             const story = {};
-            const headline = $(element)
-                .children('a')
-                .text();
+            const headline = $(element).children('a').text();
 
             /**
              * If the headline is empty, then we have captured items
@@ -60,16 +58,12 @@ router.get('/fetch', async (req, res) => {
              */
             if (headline !== '') {
                 story.headline = headline;
-                story.url = $(element)
-                    .children('a')
-                    .attr('href');
+                story.url = $(element).children('a').attr('href');
                 // If the link URL does not start with the URL base, add it.
                 if (!story.url.startsWith(appConfig.site.base)) {
                     story.url = appConfig.site.base + story.url;
                 }
-                story.caption = $(element)
-                    .next('p')
-                    .text();
+                story.caption = $(element).next('p').text();
 
                 if (story.caption.length > 0) {
                     stories.push(story);
@@ -80,9 +74,7 @@ router.get('/fetch', async (req, res) => {
         // For the NYT Sections, capture the 'Latest' stories.
         $('#stream-panel a').each((index, element) => {
             const story = {};
-            const headline = $(element)
-                .children('h2')
-                .text();
+            const headline = $(element).children('h2').text();
 
             /**
              * If the headline is empty, then we have captured items
@@ -95,9 +87,7 @@ router.get('/fetch', async (req, res) => {
                 if (!story.url.startsWith(appConfig.site.base)) {
                     story.url = appConfig.site.base + story.url;
                 }
-                story.caption = $(element)
-                    .children('p')
-                    .text();
+                story.caption = $(element).children('p').text();
 
                 if (story.caption.length > 0) {
                     stories.push(story);

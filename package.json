@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "All the News That's Fit to Scrape",
   "engines": {
-    "node": "11.7.0"
+    "node": "18.13.0"
   },
   "private": true,
   "main": "bin/www",
   "scripts": {
     "start": "node ./bin/www",
+    "dev": "DEBUG=news-scraper:* node ./bin/www",
     "lint": "eslint '**/*.js' --quiet",
     "fix": "eslint --fix .",
+    "format": "prettier --write '**/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -33,33 +35,37 @@
   },
   "homepage": "https://github.com/richardcyrus/news-scraper#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.1",
-    "axios": "^0.19.2",
-    "bootstrap": "^4.5.0",
-    "bootswatch": "^4.5.0",
-    "cheerio": "^1.0.0-rc.3",
-    "cookie-parser": "^1.4.5",
+    "@dr.pogodin/csurf": "^1.12.2",
+    "@fortawesome/fontawesome-free": "^6.2.1",
+    "@popperjs/core": "^2.11.6",
+    "axios": "^1.2.3",
+    "bootbox": "^6.0.0",
+    "bootstrap": "^5.2.3",
+    "bootswatch": "^5.2.3",
+    "cheerio": "^1.0.0-rc.12",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "csurf": "^1.11.0",
-    "debug": "^4.1.1",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-handlebars": "^5.0.0",
-    "helmet": "^3.23.3",
-    "http-errors": "^1.8.0",
-    "jquery": "^3.5.1",
-    "mongoose": "^5.9.23",
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "helmet": "^6.0.1",
+    "http-errors": "^2.0.0",
+    "jquery": "^3.6.3",
+    "mongoose": "^6.8.4",
     "morgan": "^1.10.0",
-    "node-sass-middleware": "^0.11.0",
-    "popper.js": "^1.16.1"
+    "node-sass-middleware": "^1.0.1"
   },
   "devDependencies": {
-    "eslint": "^5.13.0",
-    "eslint-config-prettier": "^4.0.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-prettier": "^3.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "prettier": "^1.16.4"
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^2.8.3"
+  },
+  "volta": {
+    "node": "18.13.0"
   }
 }
