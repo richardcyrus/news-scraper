@@ -14,7 +14,7 @@ const sassMiddleware = require('node-sass-middleware');
 const helmet = require('helmet');
 const exphbs = require('express-handlebars');
 const cors = require('cors');
-const csrf = require('csurf');
+const csrf = require('@dr.pogodin/csurf');
 const mongoose = require('mongoose');
 
 const appConfig = require('./config/app-config');
@@ -26,14 +26,16 @@ const app = express();
 
 // Set up mongoose connection
 const mongoDB = appConfig.mongodb.uri;
-mongoose.connect(mongoDB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-});
+mongoose.set('strictQuery', false);
+
 // Tell Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
+
+main().catch((err) => console.log(err));
+async function main() {
+    await mongoose.connect(mongoDB);
+}
+
 // Get the connection
 const db = mongoose.connection;
 
@@ -83,11 +85,15 @@ app.use(
 );
 app.use(
     '/js/lib',
-    express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd'))
+    express.static(path.join(__dirname, 'node_modules/@popperjs/core/dist/umd'))
 );
 app.use(
     '/js/lib',
     express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'))
+);
+app.use(
+    '/js/lib',
+    express.static(path.join(__dirname, 'node_modules/bootbox/dist'))
 );
 app.use(
     '/js/lib/fontawesome',
@@ -100,12 +106,12 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

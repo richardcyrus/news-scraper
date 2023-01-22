@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-    'extends': 'prettier',
+    'extends': 'plugin:prettier/recommended',
     'plugins': ['prettier'],
     'rules': {
         'accessor-pairs': 'error',
