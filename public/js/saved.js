@@ -7,7 +7,7 @@
 
 /* global jQuery, bootbox */
 
-(function($) {
+(function ($) {
     /* eslint-disable-next-line strict */
     'use strict';
 
@@ -36,11 +36,7 @@
         const cardHeaderText = 'Would You Like to Browse Available Articles?';
         const cardHeader = $('<div/>')
             .addClass('card-header d-block')
-            .append(
-                $('<h3/>')
-                    .addClass('text-center')
-                    .text(cardHeaderText)
-            );
+            .append($('<h3/>').addClass('text-center').text(cardHeaderText));
 
         const browseLink = $('<a/>')
             .addClass('browse-articles')
@@ -49,9 +45,7 @@
         const cardBody = $('<div/>')
             .addClass('card-body text-center')
             .append($('<h4/>').append(browseLink));
-        const card = $('<div/>')
-            .addClass('card')
-            .append(cardHeader, cardBody);
+        const card = $('<div/>').addClass('card').append(cardHeader, cardBody);
 
         articleContainer.append(alertBox, card);
     }
@@ -145,9 +139,7 @@
         // Get the article _id that was clicked. This comes from the
         // javascript object that was attached, using the .data() method,
         // when the card was created.
-        const article = $(this)
-            .parents('.card')
-            .data();
+        const article = $(this).parents('.card').data();
 
         // Set the state of the article.
         article.saved = false;
@@ -182,7 +174,9 @@
         if (!data.notes.length) {
             /* eslint-disable max-len */
             const noNotes = $('<li>')
-                .addClass('list-group-item d-block text-center pb-1')
+                .addClass(
+                    'list-group-item list-group-item-light d-block text-center pb-1'
+                )
                 .html(
                     '<p class="mb-0">There are currently no notes for this article.</p>'
                 );
@@ -196,8 +190,8 @@
                     .html('<span class="fas fa-trash-alt"></span>');
 
                 const note = $('<li>')
-                    .addClass('list-group-item note')
-                    .html(`<p class="mb-0 mr-3">${data.notes[i].body}</p>`)
+                    .addClass('list-group-item list-group-item-light note')
+                    .html(`<p class="mb-0 me-3">${data.notes[i].body}</p>`)
                     .append(button);
 
                 // Add the note id reference for the delete call.
@@ -227,25 +221,21 @@
         $(this).tooltip('hide');
 
         // Get the article id so we can find any existing notes.
-        const article = $(this)
-            .parents('.card')
-            .data();
+        const article = $(this).parents('.card').data();
 
         // Ask for any existing notes from the backend.
         $.get(`/api/notes/${article.id}`).done((response) => {
             // Construct the interior of the modal.
             const contentWrap = $('<div>').addClass('container-fluid');
             const existingNotes = $('<ul>').addClass(
-                'list-group note-container'
+                'list-group list-group-flush note-container'
             );
             const contentBreak = $('<hr>').addClass('my-2');
-            const newNoteBox = $('<textarea>')
-                .addClass('form-control')
-                .attr({
-                    placeholder: 'Write your notes here...',
-                    rows: 4,
-                    cols: 50,
-                });
+            const newNoteBox = $('<textarea>').addClass('form-control').attr({
+                placeholder: 'Write your notes here...',
+                rows: 4,
+                cols: 50,
+            });
 
             contentWrap.append(existingNotes, contentBreak, newNoteBox);
 
@@ -260,19 +250,17 @@
                 buttons: {
                     save: {
                         /* eslint-disable max-len */
-                        label:
-                            '<span class="fa fa-pencil-alt"></span>&nbsp;&nbsp;Save Note',
+                        label: '<span class="fa fa-pencil-alt"></span>&nbsp;&nbsp;Save Note',
                         /* eslint-enable max-len */
                         className: 'btn-primary save-note',
                         callback: saveNote,
                     },
                     close: {
                         /* eslint-disable max-len */
-                        label:
-                            '<span class="fas fa-times"></span>&nbsp;&nbsp;Close',
+                        label: '<span class="fas fa-times"></span>&nbsp;&nbsp;Close',
                         /* eslint-enable max-len */
                         className: 'btn-outline-warning',
-                        callback: function() {
+                        callback: function () {
                             bootbox.hideAll();
                         },
                     },
@@ -302,9 +290,7 @@
         const element = event.target;
 
         let noteData;
-        const newNote = $('.bootbox-body textarea')
-            .val()
-            .trim();
+        const newNote = $('.bootbox-body textarea').val().trim();
 
         if (newNote) {
             noteData = {
@@ -340,9 +326,7 @@
             url: `/api/notes/${note}`,
             headers: { 'X-CSRF-Token': token },
         }).done(() => {
-            $(element)
-                .parents('.note')
-                .remove();
+            $(element).parents('.note').remove();
         });
     }
 

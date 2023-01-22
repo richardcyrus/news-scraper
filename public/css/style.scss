@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Cormorant+SC:400|Libre+Franklin:400,800|Source+Serif+Pro:400,600,700');
 
+@import "node_modules/bootswatch/dist/pulse/variables";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootswatch/dist/pulse/bootswatch";
+
 // Bootstrap overrides.
 $font-family-sans-serif: 'Libre Franklin', sans-serif;
 
@@ -11,10 +15,6 @@ $list-group-hover-bg: #f8f9fa;
 $list-group-active-color: #fff;
 $list-group-active-bg: #593196;
 $list-group-disabled-color: #6c757d;
-
-@import "node_modules/bootswatch/dist/pulse/variables";
-@import "node_modules/bootstrap/scss/bootstrap";
-@import "node_modules/bootswatch/dist/pulse/bootswatch";
 
 html {
     height: 100%;
@@ -160,11 +160,6 @@ body {
         &:last-child {
             border-bottom: none !important;
             margin-bottom: 0;
-        }
-
-        @include hover-focus {
-            z-index: inherit;
-            text-decoration: inherit;
         }
 
         &.active,
